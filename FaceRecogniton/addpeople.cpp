@@ -24,6 +24,10 @@ void Addpeople::disposePic()
     QString sourceFilePath = "AddData\\";
     QString targetFilePath = "Data\\" + QString::number(MaxNumAboutPeople,10);
     targetFilePath.append("\\");
+
+    addCp.createTable("users (id int  primary key, name string)");
+    addCp.insertData("users values(?, ?)", MaxNumAboutPeople - 1, ui->NamelineEdit->text());
+
     QString sourceFile;
     QString targetFile;
     for(int i = 0;i < 10;i++)
@@ -103,13 +107,18 @@ void Addpeople::TrainingModel()
     model->predict(testSample, predictedLabel, confidence);
     qDebug() << "confidencePCA:" << confidence;
 }
+
+void Addpeople::setAddCp(const ConnectPool &value)
+{
+    addCp = value;
+}
 /****
  *    相机拍照
  ***/
 void Addpeople::onTakeapotobtnClicked()
 {
     this->close();
-    if(ui->NamelineEdit->text()==NULL)
+    if(ui->NamelineEdit->text() == NULL)
     {
         QMessageBox::warning(this,tr("错误"),tr("请输入姓名"),QMessageBox::Ok);
     }
@@ -118,22 +127,24 @@ void Addpeople::onTakeapotobtnClicked()
         ui->NamelineEdit->setEnabled(false);
         ui->TakeAPotoBtn->setEnabled(false);
         capture=new cv::VideoCapture(0);
-        int i=0;
-        while (i!=10)
+        int i = 0;
+        while (i != 10)
         {
             char key = cv::waitKey(100);
             *capture >> frame;
             imshow("Camera", frame);
-            std::string filename = cv::format("AddData\\%d.jpg", i+1);
+            std::string filename = cv::format("AddData\\%d.jpg", i + 1);
 
             switch (key)
             {
-            case'p':
-                i++;
-                imwrite(filename, frame);
-                imshow("photo", frame);
-                cv::waitKey(500);
-                cv::destroyWindow("photo");
+            case 'p':
+                while (i < 10) {
+                    i++;
+                    imwrite(filename, frame);
+                    imshow("photo", frame);
+                    cv::waitKey(500);
+                    cv::destroyWindow("photo");
+                }
                 break;
             default:
                 break;
@@ -147,6 +158,7 @@ void Addpeople::onTakeapotobtnClicked()
     int i = file.GetMaxNum("Data//people.txt");
     QString text = QString::number(i,10) + " " + ui->NamelineEdit->text();
     file.AddPeople("Data//people.txt",text);
+    ui->NamelineEdit->text() = "";
     MaxNumAboutPeople = i;
 }
 

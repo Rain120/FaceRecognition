@@ -9,6 +9,12 @@ Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
+    ConnectPool cp;
+    cp.open();
+
+    addpeople.setAddCp(cp);
+    file.setMainCP(cp);
+
     ui->setupUi(this);
     this->setWindowTitle(tr("FaceRecognition--Rainy"));
     this->setMaximumSize(350,300);
@@ -113,6 +119,7 @@ void Widget::onFacerecognitionTriggered()
         cv::Mat face_test;
 
         int predictPCA = 0;
+
         if (face.rows >= 120)
         {
             cv::resize(face, face_test, cv::Size(92, 112));

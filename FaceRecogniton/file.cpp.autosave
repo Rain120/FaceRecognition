@@ -71,8 +71,8 @@ void MyFILE::MakecsvFile()
         filepath.append(".jpg;");
         filepath.append(QString::number(MaxNumAboutPeople,10));
         this->AddPeople(csvFilePath, filepath);
-        mainCP.createTable("userspath (id int, userid int, path string)");
-        mainCP.insertPath("userspath values(?, ?, ?)", i, MaxNumAboutPeople, filepath);
+        mainCP.createTable("usersInfo (id int, userid int, path string)");
+        mainCP.insertPath("usersInfo values(?, ?, ?)", i, MaxNumAboutPeople, filepath);
     }
 }
 

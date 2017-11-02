@@ -25,13 +25,18 @@ public:
     void AddCSV();      //增添CSV信息
     void TrainingModel();    //训练模型
     MyFILE file;
+
+    void setAddCp(const ConnectPool &value);
+
 private slots:
     void onTakeapotobtnClicked();
+
 private:
     Ui::Addpeople *ui;
     cv::Mat frame;
     cv::VideoCapture *capture;
-    int MaxNumAboutPeople;
+    int MaxNumAboutPeople;  
+    ConnectPool addCp;
 
     void detectAndDisplay(QString source,QString target);
 

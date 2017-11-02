@@ -17,10 +17,22 @@ bool ConnectPool::connet(const char *dbName)
     return true;
 }
 
-void ConnectPool::createTable()
+void ConnectPool::open()
+{
+    if(connet("fr.db")){
+        qDebug() << "Database Create Sucessfully!";
+    }
+    else{
+        qDebug() << "Database Create Failed!";
+
+    }
+}
+
+void ConnectPool::createTable(QString tableCreateSQL)
 {
     QSqlQuery sql_query;
-    QString create_sql = "create table if not exist stu (id int primary key, name varchar(30), age int)";
+    QString create_sql = "create table if not exists  " +  tableCreateSQL;
+    qDebug() << "create_sql:" << create_sql;
     sql_query.prepare(create_sql);
     if(!sql_query.exec())
     {
@@ -32,14 +44,33 @@ void ConnectPool::createTable()
     }
 }
 
-void ConnectPool::insertData(int id, QString name,int age)
+void ConnectPool::insertData(QString insertSQL, int id, QString name)
 {
     QSqlQuery sql_query;
-    QString insert_sql = "insert into stu values (?, ?, ?)";
+    QString insert_sql = "insert into " + insertSQL;
+    qDebug() << "insert_sql:" << insert_sql;
     sql_query.prepare(insert_sql);
     sql_query.addBindValue(id + 1);
     sql_query.addBindValue(name);
-    sql_query.addBindValue(age);
+    if(!sql_query.exec())
+    {
+        qDebug() << "insertData sql_query.lastError()";
+    }
+    else
+    {
+        qDebug() << "inserted";
+    }
+}
+
+void ConnectPool::insertPath(QString insertSQL, int id, int userid, QString name)
+{
+    QSqlQuery sql_query;
+    QString insert_sql = "insert into " + insertSQL;
+    qDebug() << "insert_sql:" << insert_sql;
+    sql_query.prepare(insert_sql);
+    sql_query.addBindValue(id + 1);
+    sql_query.addBindValue(userid);
+    sql_query.addBindValue(name);
     if(!sql_query.exec())
     {
         qDebug() << "insertData sql_query.lastError()";
@@ -54,3 +85,4 @@ void ConnectPool::closeSQL()
 {
     db.close();
 }
+

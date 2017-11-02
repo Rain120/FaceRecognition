@@ -9,7 +9,7 @@
 #include <QDebug>
 #include <QTextStream>
 #include <QDir>
-
+#include <connectpool.h>
 
 class MyFILE: public QObject
 {
@@ -24,8 +24,12 @@ public:
     void MakecsvFile(); //生成csv.txt文件
     void getManLabel();
 
+    void setMainCP(const ConnectPool &value);
+
+
 private:
     int MaxNumAboutPeople;
+    ConnectPool mainCP;
     QDir *PicFile;    //创建文件夹
 };
 

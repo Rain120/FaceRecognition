@@ -11,11 +11,14 @@ class ConnectPool
 public:
     ConnectPool();
     bool connet(const char* dbName);
-    void createTable();
-    void insertData(int id, QString name, int age);
+    void open();
+    void createTable(QString tableCreateSQL);
+    void insertData(QString insertSQL, int id, QString name);
+    void insertPath(QString insertSQL, int id, int userid, QString name);
     void selectData();
     void deleteData();
     void closeSQL();
+
 private:
     QSqlDatabase db;
 };
