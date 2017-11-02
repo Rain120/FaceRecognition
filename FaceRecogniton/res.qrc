@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/res/img">
+        <file>image/bg_eye.png</file>
+        <file>image/r.png</file>
+        <file>image/virus_bg.jpg</file>
+    </qresource>
+</RCC>
